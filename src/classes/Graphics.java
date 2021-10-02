@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -33,12 +35,16 @@ public class Graphics extends JFrame implements ActionListener {
     private JComboBox<String> czone;
     private JLabel discount;
     private JComboBox<String> cdiscount;
+    private JLabel id;
+    private JTextField tid;
     private JButton buyTicket;
     private JButton consult;
     private JButton consultByZone;
     private JButton cancel;
     private JButton buySubmit;
-    private JButton reset;
+    private JButton consultSubmit;
+    private JButton consultByZoneSubmit;
+    private JButton menu;
     private JTextArea tout;
 
     private String zonesOptions[] = {"Principal", "Box", "Central", "Side"};
@@ -173,19 +179,115 @@ public class Graphics extends JFrame implements ActionListener {
         tout.setEditable(false);
         panel.add(tout);
 
-        buySubmit = new JButton("buySubmit");
+        buySubmit = new JButton("Submit");
         buySubmit.setFont(new Font("Arial", Font.PLAIN, 16));
         buySubmit.setSize(100, 30);
-        buySubmit.setLocation(100, 420);
+        buySubmit.setLocation(100, 400);
         buySubmit.addActionListener(this);
         panel.add(buySubmit);
         
-        reset = new JButton("Reset");
-        reset.setFont(new Font("Arial", Font.PLAIN, 16));
-        reset.setSize(100, 30);
-        reset.setLocation(200, 420);
-        reset.addActionListener(this);
-        panel.add(reset);
+        menu = new JButton("Menu");
+        menu.setFont(new Font("Arial", Font.PLAIN, 16));
+        menu.setSize(100, 30);
+        menu.setLocation(100, 440);
+        menu.addActionListener(this);
+        panel.add(menu);
+    }
+
+    private void consult() {
+ 
+        JLabel title;
+
+        title = new JLabel("Consult");
+        title.setFont(new Font("Arial", Font.PLAIN, 20));
+        title.setSize(400, 40);
+        title.setLocation(379, 40);
+        panel.add(title);
+        
+        id = new JLabel("Enter id");
+        id.setFont(new Font("Arial", Font.PLAIN, 16));
+        id.setSize(140, 20);
+        id.setLocation(100, 100);
+        panel.add(id);
+  
+        tid = new JTextField();
+        tid.setFont(new Font("Arial", Font.PLAIN, 14));
+        tid.setSize(190, 20);
+        tid.setLocation(100, 130);
+        panel.add(tid);
+
+        tout = new JTextArea();
+        tout.setBorder(BorderFactory.createCompoundBorder(
+        tout.getBorder(), 
+        BorderFactory.createEmptyBorder(20, 20, 5, 20)));
+        tout.setFont(new Font("Arial", Font.PLAIN, 16));
+        tout.setSize(400, 400);
+        tout.setLocation(360, 100);
+        tout.setLineWrap(true);
+        tout.setEditable(false);
+        panel.add(tout);
+
+        consultSubmit = new JButton("Submit");
+        consultSubmit.setFont(new Font("Arial", Font.PLAIN, 16));
+        consultSubmit.setSize(100, 30);
+        consultSubmit.setLocation(100, 400);
+        consultSubmit.addActionListener(this);
+        panel.add(consultSubmit);
+        
+        menu = new JButton("Menu");
+        menu.setFont(new Font("Arial", Font.PLAIN, 16));
+        menu.setSize(100, 30);
+        menu.setLocation(100, 440);
+        menu.addActionListener(this);
+        panel.add(menu);
+    }
+
+    private void consultByZone() {
+ 
+        JLabel title;
+
+        title = new JLabel("Consult By Zone");
+        title.setFont(new Font("Arial", Font.PLAIN, 20));
+        title.setSize(400, 40);
+        title.setLocation(379, 40);
+        panel.add(title);
+        
+        zone = new JLabel("Select zone");
+        zone.setFont(new Font("Arial", Font.PLAIN, 16));
+        zone.setSize(180, 20);
+        zone.setLocation(100, 100);
+        panel.add(zone);
+
+        czone = new JComboBox<String>(zonesOptions);
+        czone.setFont(new Font("Arial", Font.PLAIN, 15));
+        czone.setSize(160, 20);
+        czone.setLocation(100, 130);
+        panel.add(czone);
+
+        tout = new JTextArea();
+        tout.setBorder(BorderFactory.createCompoundBorder(
+        tout.getBorder(), 
+        BorderFactory.createEmptyBorder(20, 20, 5, 20)));
+        tout.setFont(new Font("Arial", Font.PLAIN, 16));
+        tout.setSize(400, 400);
+        tout.setLocation(360, 100);
+        tout.setLineWrap(true);
+        tout.setEditable(false);
+        panel.add(tout);
+
+        consultByZoneSubmit = new JButton("Submit");
+        consultByZoneSubmit.setFont(new Font("Arial", Font.PLAIN, 16));
+        consultByZoneSubmit.setSize(100, 30);
+        consultByZoneSubmit.setLocation(100, 400);
+        consultByZoneSubmit.addActionListener(this);
+        panel.add(consultByZoneSubmit);
+                
+        menu = new JButton("Menu");
+        menu.setFont(new Font("Arial", Font.PLAIN, 16));
+        menu.setSize(100, 30);
+        menu.setLocation(100, 440);
+        menu.addActionListener(this);
+        panel.add(menu);
     }
 
     @Override
@@ -194,16 +296,14 @@ public class Graphics extends JFrame implements ActionListener {
         try {
             
             if (e.getSource() == buyTicket) {
-            
                 clearPanel();
                 buyTicket();
-            
             } else if (e.getSource() == consult) {
-            
-                System.out.println("Consult");
-            
+                clearPanel();
+                consult();
             } else if (e.getSource() == consultByZone) {
-                System.out.println("Consult by zone");
+                clearPanel();
+                consultByZone();
             
             } else if (e.getSource() == cancel) {
                 System.out.println("Cancel");
@@ -296,12 +396,61 @@ public class Graphics extends JFrame implements ActionListener {
                 tout.setText(data);
                 tout.setEditable(false);
 
-            } else if (e.getSource() == reset) {
-                tname.setText("");
-                czone.setSelectedIndex(0);
-                cdiscount.setSelectedIndex(0);
-                tout.setText("");
+            } else if(e.getSource() == consultSubmit){
+                 
+                int idValue = Integer.valueOf(tid.getText());
+
+                String data = "";
+
+                for (Ticket ticket: tickets) {
+                    if (ticket.getId() == idValue) {
+                       data += ticket.toString(); 
+                    }
+                }
+                
+                if (data.isEmpty()) {
+                    data = "\nNo ticket founded :(";
+                }
+
+                tout.setText(data);
                 tout.setEditable(false);
+
+
+            } else if(e.getSource() == consultByZoneSubmit){
+                 
+                String zoneValue = (String)czone.getSelectedItem();
+                String data = "";
+                Double totalCost = 0.0;
+                int totalTickets = 0;
+                DecimalFormat df4 = new DecimalFormat("#.##");
+
+                for (Ticket ticket : tickets) {
+                    if (ticket.getZone().equals(zoneValue)) {
+                        if (totalTickets == 0) {
+                            data += ticket.toString();
+                            totalCost += ticket.getCost();
+                            totalTickets++;    
+                        } else {
+                            data += "\n" + ticket.toString();
+                            totalCost += ticket.getCost();
+                            totalTickets++;
+                        }
+                    }
+                }
+                
+                if (totalTickets==0) {
+                    data = "\nNo tickets buyed yet :(";
+                } else {
+                    data += "\n\nTotal tickets: " + totalTickets; 
+                    data += "\nTotal cost: " + "$" + df4.format(totalCost); 
+                }
+
+                tout.setText(data);
+                tout.setEditable(false);
+
+            } else if(e.getSource() == menu) {
+                clearPanel();
+                menu();
             }
 
         } catch (Exception error) {

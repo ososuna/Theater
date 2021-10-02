@@ -1,5 +1,7 @@
 package classes;
 
+import java.text.DecimalFormat;
+
 public class Ticket {
     
     private int id;
@@ -48,7 +50,11 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket [buyerName=" + buyerName + ", cost=" + cost + ", id=" + id + ", zone=" + zone + "]";
+        
+        DecimalFormat df4 = new DecimalFormat("#.##");
+
+        return "\nId: " + id + "\nName: " + buyerName + "\nZone: " +
+                zone + "\nCost: " + "$" + df4.format(cost);
     }
 
 }
