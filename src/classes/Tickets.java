@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Tickets {
     
-    public ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+    public static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
     
-    public int getNextId() {
+    public static int getNextId() {
         
         if (tickets.isEmpty()) {
             return 1;
