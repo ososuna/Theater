@@ -7,12 +7,14 @@ public class Ticket {
     private int id;
     private String zone;
     private String buyerName;
+    private String discountType;
     private double cost;
-    
-    public Ticket(int id, String zone, String buyerName, double cost) {
+
+    public Ticket(int id, String zone, String buyerName, String discountType, double cost) {
         this.id = id;
         this.zone = zone;
         this.buyerName = buyerName;
+        this.discountType = discountType;
         this.cost = cost;
     }
 
@@ -40,6 +42,14 @@ public class Ticket {
         this.buyerName = buyerName;
     }
 
+    public String getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(String discountType) {
+        this.discountType = discountType;
+    }
+
     public double getCost() {
         return cost;
     }
@@ -54,7 +64,8 @@ public class Ticket {
         DecimalFormat df4 = new DecimalFormat("#.##");
 
         return "\nId: " + id + "\nName: " + buyerName + "\nZone: " +
-                zone + "\nCost: " + "$" + df4.format(cost);
+                zone + "\nDiscount: " + discountType + "\nCost: " +
+                "$" + df4.format(cost);
     }
 
 }

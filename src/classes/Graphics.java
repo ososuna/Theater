@@ -44,6 +44,7 @@ public class Graphics extends JFrame implements ActionListener {
     private JButton buySubmit;
     private JButton consultSubmit;
     private JButton consultByZoneSubmit;
+    private JButton cancelSubmit;
     private JButton menu;
     private JTextArea tout;
 
@@ -290,6 +291,54 @@ public class Graphics extends JFrame implements ActionListener {
         panel.add(menu);
     }
 
+    private void cancel() {
+ 
+        JLabel title;
+
+        title = new JLabel("Cancel");
+        title.setFont(new Font("Arial", Font.PLAIN, 20));
+        title.setSize(400, 40);
+        title.setLocation(379, 40);
+        panel.add(title);
+        
+        id = new JLabel("Enter id");
+        id.setFont(new Font("Arial", Font.PLAIN, 16));
+        id.setSize(140, 20);
+        id.setLocation(100, 100);
+        panel.add(id);
+  
+        tid = new JTextField();
+        tid.setFont(new Font("Arial", Font.PLAIN, 14));
+        tid.setSize(190, 20);
+        tid.setLocation(100, 130);
+        panel.add(tid);
+
+        tout = new JTextArea();
+        tout.setBorder(BorderFactory.createCompoundBorder(
+        tout.getBorder(), 
+        BorderFactory.createEmptyBorder(20, 20, 5, 20)));
+        tout.setFont(new Font("Arial", Font.PLAIN, 16));
+        tout.setSize(400, 400);
+        tout.setLocation(360, 100);
+        tout.setLineWrap(true);
+        tout.setEditable(false);
+        panel.add(tout);
+
+        cancelSubmit = new JButton("Submit");
+        cancelSubmit.setFont(new Font("Arial", Font.PLAIN, 16));
+        cancelSubmit.setSize(100, 30);
+        cancelSubmit.setLocation(100, 400);
+        cancelSubmit.addActionListener(this);
+        panel.add(cancelSubmit);
+        
+        menu = new JButton("Menu");
+        menu.setFont(new Font("Arial", Font.PLAIN, 16));
+        menu.setSize(100, 30);
+        menu.setLocation(100, 440);
+        menu.addActionListener(this);
+        panel.add(menu);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         
@@ -306,7 +355,8 @@ public class Graphics extends JFrame implements ActionListener {
                 consultByZone();
             
             } else if (e.getSource() == cancel) {
-                System.out.println("Cancel");
+                clearPanel();
+                cancel();
             
             } else if (e.getSource() == buySubmit) {
                 
@@ -374,7 +424,7 @@ public class Graphics extends JFrame implements ActionListener {
                 String nameValue = tname.getText();
                 
                 Client client = new Client(nameValue, discountValue);
-                Ticket ticket = new Ticket(Tickets.getNextId(), zoneValue, nameValue, cost);
+                Ticket ticket = new Ticket(Tickets.getNextId(), zoneValue, nameValue, discountValue, cost);
                 
                 client.setTicket(ticket);
 
@@ -443,6 +493,28 @@ public class Graphics extends JFrame implements ActionListener {
                 } else {
                     data += "\n\nTotal tickets: " + totalTickets; 
                     data += "\nTotal cost: " + "$" + df4.format(totalCost); 
+                }
+
+                tout.setText(data);
+                tout.setEditable(false);
+
+            } else if(e.getSource() == cancelSubmit) {
+                
+                int idValue = Integer.valueOf(tid.getText());
+                String data;
+                boolean found = false;
+
+                for (Ticket ticket: tickets) {
+                    if (ticket.getId() == idValue) {
+                       tickets.remove(ticket);
+                       found = true;
+                    }
+                }
+                
+                if (found) {
+                    data = "\nTicket canceled successfully!";
+                } else {
+                    data = "\nNo ticket founded :(";
                 }
 
                 tout.setText(data);
